@@ -23,26 +23,18 @@
     --eligible-bg: #f0faf4;
     --eligible-border: #22c55e;
     --eligible-text: #15803d;
-
     --probable-bg: #fffbeb;
     --probable-border: #f59e0b;
     --probable-text: #92400e;
-
     --ineligible-bg: #fef2f2;
     --ineligible-border: #ef4444;
     --ineligible-text: #991b1b;
-
     --unknown-bg: #f8fafc;
     --unknown-border: #94a3b8;
     --unknown-text: #475569;
   }
 
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: transparent;
-    margin: 0;
-    padding: 0;
-  }
+  body { font-family: 'Source Sans 3', sans-serif; background: transparent; margin: 0; padding: 0; }
 
   .widget {
     background: var(--white);
@@ -55,7 +47,6 @@
     box-shadow: 0 2px 16px rgba(26,39,68,0.08);
   }
 
-  /* HEADER */
   .widget-header {
     background: var(--navy);
     padding: 1.25rem 1.5rem 1rem;
@@ -63,407 +54,183 @@
     border-radius: 8px 8px 0 0;
   }
 
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
 
   .header-text h2 {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1rem;
-    color: var(--white);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.3;
+    font-size: 1rem; color: var(--white); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1.3;
   }
 
-  .header-text p {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.6);
-    margin-top: 0.2rem;
-    font-weight: 300;
-  }
+  .header-text p { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 0.2rem; font-weight: 300; }
 
-  /* LANGUAGE TOGGLE — prominent */
-  .lang-toggle {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex-shrink: 0;
-  }
+  .lang-toggle { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
 
   .lang-btn {
-    background: rgba(255,255,255,0.1);
-    border: 1.5px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.65);
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.3rem 0.75rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Source Sans 3', sans-serif;
-    letter-spacing: 0.04em;
-    transition: all 0.15s;
-    white-space: nowrap;
-    text-align: center;
-    min-width: 80px;
+    background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.65); font-size: 0.75rem; font-weight: 700;
+    padding: 0.3rem 0.75rem; border-radius: 3px; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; letter-spacing: 0.04em;
+    transition: all 0.15s; white-space: nowrap; min-width: 80px; text-align: center;
   }
 
-  .lang-btn:hover {
-    background: rgba(255,255,255,0.15);
-    color: var(--white);
-    border-color: rgba(255,255,255,0.4);
-  }
+  .lang-btn:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+  .lang-btn.active { background: var(--red); color: var(--white); border-color: var(--red); }
 
-  .lang-btn.active {
-    background: var(--red);
-    color: var(--white);
-    border-color: var(--red);
-  }
-
-  .lang-label {
-    font-size: 0.62rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.35);
-    text-align: right;
-    margin-bottom: 2px;
-  }
-
-  /* BODY */
-  .widget-body {
-    padding: 1.25rem 1.5rem;
-    position: relative;
-  }
+  .widget-body { padding: 1.25rem 1.5rem; }
 
   .input-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--navy);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 0.4rem;
-    display: block;
+    font-size: 0.78rem; font-weight: 600; color: var(--navy);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.4rem; display: block;
   }
 
-  .input-wrapper {
-    position: relative;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 0.5rem;
-  }
+  .input-wrapper { position: relative; }
+  .input-row { display: flex; gap: 0.5rem; }
 
   .addr-input {
-    flex: 1;
-    padding: 0.7rem 0.9rem;
-    border: 1.5px solid var(--border);
-    border-radius: 4px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.88rem;
-    color: var(--navy);
-    outline: none;
-    transition: border-color 0.15s;
-    min-width: 0;
+    flex: 1; padding: 0.7rem 0.9rem; border: 1.5px solid var(--border);
+    border-radius: 4px; font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.88rem; color: var(--navy); outline: none;
+    transition: border-color 0.15s; min-width: 0;
   }
 
   .addr-input:focus { border-color: var(--navy); }
   .addr-input::placeholder { color: #9ca3af; }
 
   .check-btn {
-    background: var(--navy);
-    color: var(--white);
-    border: none;
-    border-radius: 4px;
-    padding: 0.7rem 1rem;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s;
-    letter-spacing: 0.03em;
+    background: var(--navy); color: var(--white); border: none; border-radius: 4px;
+    padding: 0.7rem 1rem; font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+    transition: all 0.15s; letter-spacing: 0.03em;
   }
 
-  .check-btn:hover { background: var(--navy-mid); }
+  .check-btn:hover { background: #243460; }
   .check-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* AUTOCOMPLETE DROPDOWN */
   .autocomplete-list {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 56px;
-    background: var(--white);
-    border: 1.5px solid var(--navy);
-    border-top: none;
-    border-radius: 0 0 4px 4px;
-    z-index: 1000;
-    box-shadow: 0 4px 16px rgba(26,39,68,0.12);
-    max-height: 200px;
-    overflow-y: auto;
+    display: none; position: absolute; top: 100%; left: 0; right: 56px;
+    background: var(--white); border: 2px solid var(--navy); border-top: none;
+    border-radius: 0 0 4px 4px; z-index: 1000;
+    box-shadow: 0 8px 24px rgba(26,39,68,0.15); max-height: 200px; overflow-y: auto;
   }
 
   .autocomplete-list.show { display: block; }
 
   .autocomplete-item {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.83rem;
-    color: var(--navy);
-    cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    line-height: 1.4;
-    transition: background 0.1s;
+    padding: 0.6rem 0.9rem; font-size: 0.84rem; color: var(--navy);
+    cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.1s; line-height: 1.4;
   }
 
   .autocomplete-item:last-child { border-bottom: none; }
   .autocomplete-item:hover { background: var(--light); }
-
-  .autocomplete-item .addr-main {
-    font-weight: 600;
-    font-size: 0.85rem;
-  }
-
-  .autocomplete-item .addr-sub {
-    font-size: 0.75rem;
-    color: var(--gray);
-    margin-top: 0.1rem;
-  }
+  .autocomplete-item .addr-main { font-weight: 600; }
+  .autocomplete-item .addr-sub { font-size: 0.74rem; color: var(--gray); margin-top: 0.1rem; }
 
   .autocomplete-loading {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.82rem;
-    color: var(--gray);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    padding: 0.6rem 0.9rem; font-size: 0.82rem; color: var(--gray);
+    display: flex; align-items: center; gap: 0.5rem;
   }
 
   .mini-spinner {
-    width: 12px;
-    height: 12px;
-    border: 2px solid var(--border);
-    border-top-color: var(--navy);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
+    width: 12px; height: 12px; border: 2px solid var(--border);
+    border-top-color: var(--navy); border-radius: 50%;
+    animation: spin 0.7s linear infinite; flex-shrink: 0;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* LOADING */
   .loading {
-    display: none;
-    align-items: center;
-    gap: 0.6rem;
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    background: var(--light);
-    border-radius: 4px;
-    font-size: 0.85rem;
-    color: var(--gray);
+    display: none; align-items: center; gap: 0.6rem; margin-top: 1rem;
+    padding: 0.75rem 1rem; background: var(--light); border-radius: 4px;
+    font-size: 0.85rem; color: var(--gray);
   }
 
   .loading.show { display: flex; }
 
   .spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--border);
-    border-top-color: var(--navy);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
+    width: 16px; height: 16px; border: 2px solid var(--border);
+    border-top-color: var(--navy); border-radius: 50%;
+    animation: spin 0.7s linear infinite; flex-shrink: 0;
   }
 
-  /* RESULT */
-  .result {
-    display: none;
-    margin-top: 1rem;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+  .result { display: none; margin-top: 1rem; border-radius: 4px; overflow: hidden; }
+  .result.show { display: block; animation: fadeUp 0.3s ease both; }
 
-  .result.show { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-  .result-header {
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
+  .result-header { padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .result-icon { font-size: 1.1rem; line-height: 1; flex-shrink: 0; }
+  .result-title { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; }
+  .result-body { padding: 0.75rem 1rem; font-size: 0.84rem; line-height: 1.65; border-top: 1px solid rgba(0,0,0,0.06); }
 
-  .result-icon {
-    font-size: 1.1rem;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .result-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .result-body {
-    padding: 0.75rem 1rem;
-    font-size: 0.83rem;
-    line-height: 1.6;
-    border-top: 1px solid rgba(0,0,0,0.06);
-  }
-
-  .result.eligible .result-header { background: var(--eligible-bg); }
   .result.eligible { border: 1.5px solid var(--eligible-border); }
+  .result.eligible .result-header { background: var(--eligible-bg); }
   .result.eligible .result-title { color: var(--eligible-text); }
   .result.eligible .result-body { background: var(--eligible-bg); color: var(--eligible-text); }
 
-  .result.probable .result-header { background: var(--probable-bg); }
   .result.probable { border: 1.5px solid var(--probable-border); }
+  .result.probable .result-header { background: var(--probable-bg); }
   .result.probable .result-title { color: var(--probable-text); }
   .result.probable .result-body { background: var(--probable-bg); color: var(--probable-text); }
 
-  .result.ineligible .result-header { background: var(--ineligible-bg); }
   .result.ineligible { border: 1.5px solid var(--ineligible-border); }
+  .result.ineligible .result-header { background: var(--ineligible-bg); }
   .result.ineligible .result-title { color: var(--ineligible-text); }
   .result.ineligible .result-body { background: var(--ineligible-bg); color: var(--ineligible-text); }
 
-  .result.unknown .result-header { background: var(--unknown-bg); }
   .result.unknown { border: 1.5px solid var(--unknown-border); }
+  .result.unknown .result-header { background: var(--unknown-bg); }
   .result.unknown .result-title { color: var(--unknown-text); }
   .result.unknown .result-body { background: var(--unknown-bg); color: var(--unknown-text); }
 
-  /* CONTACT */
-  .contact-box {
-    display: none;
-    margin-top: 1rem;
-    background: var(--navy);
-    border-radius: 4px;
-    padding: 0.9rem 1rem;
-  }
+  .contact-box { display: none; margin-top: 1rem; background: var(--navy); border-radius: 4px; padding: 0.9rem 1rem; }
+  .contact-box.show { display: block; animation: fadeUp 0.3s ease both; }
 
-  .contact-box.show { display: block; }
+  .contact-label { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.45); margin-bottom: 0.4rem; }
+  .contact-name { font-family: 'Libre Baskerville', serif; font-size: 0.95rem; color: var(--white); font-weight: 700; margin-bottom: 0.3rem; }
+  .contact-details { display: flex; flex-direction: column; gap: 0.2rem; }
 
-  .contact-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 0.5rem;
-  }
-
-  .contact-name {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 0.95rem;
-    color: var(--white);
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
-
-  .contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .contact-link {
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: color 0.15s;
-  }
-
+  .contact-link { font-size: 0.82rem; color: rgba(255,255,255,0.72); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s; }
   .contact-link:hover { color: var(--white); }
+  .contact-link .dot { width: 4px; height: 4px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+  .nmls { font-size: 0.67rem; color: rgba(255,255,255,0.28); margin-top: 0.5rem; }
 
-  .contact-link .dot {
-    width: 4px;
-    height: 4px;
-    background: var(--red);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .nmls {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.35);
-    margin-top: 0.5rem;
-  }
-
-  /* FOOTER */
-  .widget-footer {
-    padding: 0.6rem 1.5rem;
-    border-top: 1px solid var(--border);
-    background: var(--off-white);
-    text-align: center;
-    border-radius: 0 0 8px 8px;
-  }
-
-  .widget-footer a {
-    font-size: 0.7rem;
-    color: var(--gray);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-  }
-
+  .widget-footer { padding: 0.6rem 1.5rem; border-top: 1px solid var(--border); background: var(--off-white); text-align: center; border-radius: 0 0 8px 8px; }
+  .widget-footer a { font-size: 0.7rem; color: var(--gray); text-decoration: none; letter-spacing: 0.04em; }
   .widget-footer a:hover { color: var(--navy); }
 </style>
 </head>
 <body>
-
 <div class="widget" id="widget">
 
-  <!-- HEADER -->
   <div class="widget-header">
     <div class="header-top">
       <div class="header-text">
         <h2 id="header-title">Grant Eligibility Check</h2>
         <p id="header-sub">Check if this property may qualify for bank homebuyer grants</p>
       </div>
-      <div>
-        <div class="lang-label" id="lang-label">Language</div>
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇺🇸 English</button>
-          <button class="lang-btn" id="btn-es" onclick="setLang('es')">🇲🇽 Español</button>
-        </div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btn-es" onclick="setLang('es')">Espanol</button>
       </div>
     </div>
   </div>
 
-  <!-- BODY -->
   <div class="widget-body">
     <label class="input-label" id="input-label" for="addr">Property Address</label>
     <div class="input-wrapper">
       <div class="input-row">
-        <input
-          type="text"
-          id="addr"
-          class="addr-input"
-          placeholder="Enter a street address, city, state"
-          autocomplete="off"
-        />
-        <button class="check-btn" id="check-btn" onclick="checkAddress()">
-          <span id="btn-text">Check</span>
-        </button>
+        <input type="text" id="addr" class="addr-input" placeholder="Enter a street address, city, state" autocomplete="off" />
+        <button class="check-btn" id="check-btn" onclick="checkAddress()"><span id="btn-text">Check</span></button>
       </div>
       <div class="autocomplete-list" id="autocomplete-list"></div>
     </div>
 
-    <!-- LOADING -->
     <div class="loading" id="loading">
       <div class="spinner"></div>
       <span id="loading-text">Looking up census tract data...</span>
     </div>
 
-    <!-- RESULT -->
     <div class="result" id="result">
       <div class="result-header">
         <span class="result-icon" id="result-icon"></span>
@@ -472,37 +239,47 @@
       <div class="result-body" id="result-body"></div>
     </div>
 
-    <!-- CONTACT -->
     <div class="contact-box" id="contact-box">
       <div class="contact-label" id="contact-label">To confirm eligibility, contact:</div>
       <div class="contact-name">Brian Cross</div>
       <div class="contact-details">
-        <a href="tel:5035691105" class="contact-link">
-          <span class="dot"></span>503-569-1105
-        </a>
-        <a href="mailto:Brian_Cross@keybank.com" class="contact-link">
-          <span class="dot"></span>Brian_Cross@keybank.com
-        </a>
-        <a href="https://www.key.com" target="_blank" class="contact-link">
-          <span class="dot"></span>KeyBank Mortgage Loan Officer
-        </a>
+        <a href="tel:5035691105" class="contact-link"><span class="dot"></span>503-569-1105</a>
+        <a href="mailto:Brian_Cross@keybank.com" class="contact-link"><span class="dot"></span>Brian_Cross@keybank.com</a>
+        <span class="contact-link"><span class="dot"></span>KeyBank Mortgage Loan Officer</span>
       </div>
-      <div class="nmls">NMLS #590481 · KeyBank NMLS #399797 · Equal Housing Lender</div>
+      <div class="nmls">NMLS #590481 — KeyBank NMLS #399797 — Equal Housing Lender</div>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div class="widget-footer">
     <a href="https://craeligible.com" target="_blank">Powered by craeligible.com</a>
   </div>
-
 </div>
 
 <script>
   const GEOCODIO_KEY = '7d8f967d1f139a89f86f5e55afeed16a7f4d2dd';
   let currentLang = 'en';
   let autocompleteTimer = null;
-  let selectedFromDropdown = false;
+
+  // FFIEC-verified qualifying tracts — Oregon + SW Washington
+  const KNOWN_TRACTS = [
+    '41031940000','41031960201','41045970400',
+    '41047000501','41047000502','41047000703',
+    '41047001605','41047001607','41047001701',
+    '41047001702','41047001801','41047010309',
+    '41051000601','41051000602','41051004003',
+    '41051004104','41051007400','41051007600',
+    '41051008204','41051008301','41051009001',
+    '41051009002','41051009101','41051009202',
+    '41051009204','41051009301','41051009501',
+    '41051009604','41051009605','41051009606',
+    '41051009801','41051010304','41067031100',
+    '41067031202','41067031402','41067031606',
+    '41067031617','41067031626','41067031705',
+    '41067031706','41067032005','41067032409',
+    '41067032501','41067032903','41067032904',
+    '41067033201','53011041111'
+  ];
 
   const strings = {
     en: {
@@ -514,48 +291,36 @@
       autocompleteLoading: 'Searching addresses...',
       contactLabel: 'To confirm eligibility, contact:',
       placeholder: 'Enter a street address, city, state',
-      langLabel: 'Language',
-
       eligibleTitle: 'Likely Eligible',
-      eligibleBody: 'This property appears to be in a qualifying census tract — Low or Moderate income with a majority-minority population. Buyers financing through KeyBank, Bank of America, or Chase may qualify for $5,000–$17,500 in grants toward closing costs or down payment.',
-
+      eligibleBody: 'This property is in a census tract designated by the FFIEC as eligible for the KeyBank Home Buyer Credit. Buyers financing through KeyBank may qualify for $5,000 toward closing costs.',
       probableTitle: 'Possibly Eligible',
-      probableBody: 'This property is in a borderline census tract. It may qualify for homebuyer grants — but verification is recommended before confirming eligibility with a buyer.',
-
+      probableBody: 'This property may be in a census tract eligible for the KeyBank Home Buyer Credit. Verification is recommended — contact a lender to confirm.',
       ineligibleTitle: 'Does Not Appear Eligible',
-      ineligibleBody: 'This property does not appear to be in a qualifying census tract based on current FFIEC data. The buyer may still qualify for other assistance programs.',
-
+      ineligibleBody: 'This property does not appear to be in a qualifying census tract for the KeyBank Home Buyer Credit. Other homebuyer assistance programs may still be available.',
       unknownTitle: 'Unable to Determine',
-      unknownBody: 'Eligibility could not be determined for this address. This may be due to an unusual census tract, a non-residential address, or a data limitation. Please verify directly with a lender.',
-
-      notFoundBody: 'Address not found. Please include city and state — e.g. "4380 Terraza Ct NE, Salem, OR"',
+      unknownBody: 'Eligibility could not be determined for this address. Contact a lender to verify directly.',
+      notFoundBody: 'Address not found. Please include city and state — for example: 4380 Terraza Ct NE, Salem, OR',
       errorBody: 'Unable to look up this address right now. Please try again.',
     },
     es: {
-      headerTitle: 'Verificación de Elegibilidad',
+      headerTitle: 'Verificacion de Elegibilidad',
       headerSub: 'Verifique si esta propiedad puede calificar para subsidios bancarios',
-      inputLabel: 'Dirección de la Propiedad',
+      inputLabel: 'Direccion de la Propiedad',
       btnText: 'Verificar',
       loadingText: 'Consultando datos del censo...',
       autocompleteLoading: 'Buscando direcciones...',
       contactLabel: 'Para confirmar elegibilidad, contacte:',
-      placeholder: 'Ingrese una dirección, ciudad, estado',
-      langLabel: 'Idioma',
-
+      placeholder: 'Ingrese una direccion, ciudad, estado',
       eligibleTitle: 'Probablemente Elegible',
-      eligibleBody: 'Esta propiedad parece estar en un censo calificado — ingresos Bajos o Moderados con población mayoritariamente minoritaria. Los compradores que financien con KeyBank, Bank of America o Chase pueden calificar para $5,000–$17,500 en subsidios para costos de cierre o pago inicial.',
-
+      eligibleBody: 'Esta propiedad esta en un censo designado por el FFIEC como elegible para el KeyBank Home Buyer Credit. Los compradores que financien con KeyBank pueden calificar para $5,000 hacia costos de cierre.',
       probableTitle: 'Posiblemente Elegible',
-      probableBody: 'Esta propiedad está en un censo limítrofe. Puede calificar para subsidios — pero se recomienda verificación antes de confirmar la elegibilidad con un comprador.',
-
+      probableBody: 'Esta propiedad puede estar en un censo elegible para el KeyBank Home Buyer Credit. Se recomienda verificacion — contacte a un prestamista para confirmar.',
       ineligibleTitle: 'No Parece Elegible',
-      ineligibleBody: 'Esta propiedad no parece estar en un censo calificado según los datos actuales del FFIEC. El comprador aún puede calificar para otros programas de asistencia.',
-
+      ineligibleBody: 'Esta propiedad no parece estar en un censo calificado para el KeyBank Home Buyer Credit. Otros programas de asistencia pueden estar disponibles.',
       unknownTitle: 'No Se Puede Determinar',
-      unknownBody: 'No se pudo determinar la elegibilidad para esta dirección. Esto puede deberse a un censo inusual, una dirección no residencial, o una limitación de datos. Verifique directamente con un prestamista.',
-
-      notFoundBody: 'Dirección no encontrada. Incluya ciudad y estado — ej. "4380 Terraza Ct NE, Salem, OR"',
-      errorBody: 'No se puede consultar esta dirección en este momento. Por favor intente de nuevo.',
+      unknownBody: 'No se pudo determinar la elegibilidad. Contacte a un prestamista para verificar directamente.',
+      notFoundBody: 'Direccion no encontrada. Por favor incluya ciudad y estado.',
+      errorBody: 'No se puede consultar esta direccion ahora. Por favor intente de nuevo.',
     }
   };
 
@@ -567,114 +332,59 @@
     document.getElementById('input-label').textContent = s.inputLabel;
     document.getElementById('btn-text').textContent = s.btnText;
     document.getElementById('loading-text').textContent = s.loadingText;
-    document.getElementById('contact-label').textContent = s.contactLabel;
     document.getElementById('addr').placeholder = s.placeholder;
-    document.getElementById('lang-label').textContent = s.langLabel;
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
   }
 
-  // AUTOCOMPLETE
   const addrInput = document.getElementById('addr');
   const autocompleteList = document.getElementById('autocomplete-list');
 
   addrInput.addEventListener('input', function() {
     const val = this.value.trim();
-    selectedFromDropdown = false;
     clearTimeout(autocompleteTimer);
-
-    if (val.length < 4) {
-      hideAutocomplete();
-      return;
-    }
-
-    // Show loading state
-    autocompleteList.innerHTML = `
-      <div class="autocomplete-loading">
-        <div class="mini-spinner"></div>
-        <span>${strings[currentLang].autocompleteLoading}</span>
-      </div>`;
+    if (val.length < 4) { hideAutocomplete(); return; }
+    autocompleteList.innerHTML = `<div class="autocomplete-loading"><div class="mini-spinner"></div><span>${strings[currentLang].autocompleteLoading}</span></div>`;
     autocompleteList.classList.add('show');
-
     autocompleteTimer = setTimeout(() => fetchSuggestions(val), 350);
   });
 
   async function fetchSuggestions(query) {
     try {
       const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&countrycodes=us&format=json&addressdetails=1&limit=5`;
-      const res = await fetch(url, {
-        headers: { 'Accept-Language': currentLang === 'es' ? 'es' : 'en' }
-      });
+      const res = await fetch(url);
       const data = await res.json();
-
-      if (!data.length) {
-        hideAutocomplete();
-        return;
-      }
-
+      if (!data.length) { hideAutocomplete(); return; }
       autocompleteList.innerHTML = '';
       data.forEach(item => {
         const div = document.createElement('div');
         div.className = 'autocomplete-item';
-
-        // Parse address parts
         const a = item.address;
-        const houseNumber = a.house_number || '';
-        const road = a.road || '';
-        const city = a.city || a.town || a.village || '';
-        const state = a.state || '';
-        const zip = a.postcode || '';
-
-        const mainText = [houseNumber, road].filter(Boolean).join(' ');
-        const subText = [city, state, zip].filter(Boolean).join(', ');
-        const fullAddress = [mainText, city, state, zip].filter(Boolean).join(', ');
-
-        div.innerHTML = `
-          <div class="addr-main">${mainText || item.display_name.split(',')[0]}</div>
-          <div class="addr-sub">${subText}</div>
-        `;
-
-        div.addEventListener('click', () => {
-          addrInput.value = fullAddress;
-          selectedFromDropdown = true;
-          hideAutocomplete();
-          checkAddress();
-        });
-
+        const mainText = [a.house_number, a.road].filter(Boolean).join(' ');
+        const subText = [a.city || a.town || a.village, a.state, a.postcode].filter(Boolean).join(', ');
+        const fullAddress = [mainText, a.city || a.town || a.village, a.state, a.postcode].filter(Boolean).join(', ');
+        div.innerHTML = `<div class="addr-main">${mainText || item.display_name.split(',')[0]}</div><div class="addr-sub">${subText}</div>`;
+        div.addEventListener('click', () => { addrInput.value = fullAddress; hideAutocomplete(); checkAddress(); });
         autocompleteList.appendChild(div);
       });
-
       autocompleteList.classList.add('show');
-    } catch (e) {
-      hideAutocomplete();
-    }
+    } catch(e) { hideAutocomplete(); }
   }
 
-  function hideAutocomplete() {
-    autocompleteList.classList.remove('show');
-    autocompleteList.innerHTML = '';
-  }
+  function hideAutocomplete() { autocompleteList.classList.remove('show'); autocompleteList.innerHTML = ''; }
 
-  // Close dropdown when clicking outside
   document.addEventListener('click', function(e) {
-    if (!document.getElementById('widget').contains(e.target)) {
-      hideAutocomplete();
-    }
+    if (!document.getElementById('widget').contains(e.target)) hideAutocomplete();
   });
 
   addrInput.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') hideAutocomplete();
-    if (e.key === 'Enter') {
-      hideAutocomplete();
-      checkAddress();
-    }
+    if (e.key === 'Enter') { hideAutocomplete(); checkAddress(); }
   });
 
-  // MAIN CHECK FUNCTION
   async function checkAddress() {
-    const addr = document.getElementById('addr').value.trim();
+    const addr = addrInput.value.trim();
     const s = strings[currentLang];
-
     if (!addr) return;
 
     hideAutocomplete();
@@ -692,21 +402,24 @@
       document.getElementById('check-btn').disabled = false;
 
       const result = data?.results?.[0];
-
-      if (!result) {
-        showResult('unknown', '❓', s.unknownTitle, s.notFoundBody, true);
-        return;
-      }
+      if (!result) { showResult('unknown', '?', s.unknownTitle, s.notFoundBody, true); return; }
 
       const ffiec = result?.fields?.ffiec;
       const acs = result?.fields?.acs?.demographics;
-      const tractCode = ffiec?.census_tract || '';
-      const state = ffiec?.fips_state_code || '';
+      const stateCode = ffiec?.fips_state_code || '';
       const county = ffiec?.fips_county_code || '';
+      const tractCode = ffiec?.census_tract || '';
+      const fullGeoid = stateCode + county + tractCode;
       const incomeLevel = ffiec?.income_indicator || '';
       const isLMI = incomeLevel === 'Low' || incomeLevel === 'Moderate';
 
-      // Calculate minority %
+      // KNOWN TRACT OVERRIDE — always eligible green
+      if (tractCode && KNOWN_TRACTS.includes(fullGeoid)) {
+        showResult('eligible', 'v', s.eligibleTitle, s.eligibleBody, true);
+        return;
+      }
+
+      // Calculate minority % for unknown tracts
       let minorityPct = null;
       if (acs) {
         const raceData = acs['Race and ethnicity'];
@@ -719,50 +432,22 @@
         }
       }
 
-      const tractInfo = tractCode ? ` · Tract ${state}${county}${tractCode}` : '';
-
-      // Handle fully missing data
-      if (!incomeLevel && minorityPct === null) {
-        showResult('unknown', '❓', s.unknownTitle, s.unknownBody, true);
-        return;
-      }
-
-      // Not LMI — not eligible
-      if (incomeLevel && !isLMI) {
-        showResult('ineligible', '✕', s.ineligibleTitle,
-          s.ineligibleBody + ` · Income Level: ${incomeLevel}` + tractInfo, true);
-        return;
-      }
-
-      // LMI confirmed but no minority data
-      if (isLMI && minorityPct === null) {
-        showResult('unknown', '❓', s.unknownTitle,
-          s.unknownBody + ` · Income Level: ${incomeLevel}` + tractInfo, true);
-        return;
-      }
-
-      // LMI confirmed — check minority %
-      let tier, icon, title, body;
-      const pctLabel = ` · Income: ${incomeLevel} · Minority: ${minorityPct.toFixed(1)}%` + tractInfo;
+      if (!incomeLevel && minorityPct === null) { showResult('unknown', '?', s.unknownTitle, s.unknownBody, true); return; }
+      if (incomeLevel && !isLMI) { showResult('ineligible', 'x', s.ineligibleTitle, s.ineligibleBody, true); return; }
+      if (isLMI && minorityPct === null) { showResult('unknown', '?', s.unknownTitle, s.unknownBody, true); return; }
 
       if (minorityPct >= 55) {
-        tier = 'eligible'; icon = '✓';
-        title = s.eligibleTitle; body = s.eligibleBody + pctLabel;
+        showResult('eligible', 'v', s.eligibleTitle, s.eligibleBody, true);
       } else if (minorityPct >= 45) {
-        tier = 'probable'; icon = '⚠';
-        title = s.probableTitle; body = s.probableBody + pctLabel;
+        showResult('probable', '~', s.probableTitle, s.probableBody, true);
       } else {
-        tier = 'ineligible'; icon = '✕';
-        title = s.ineligibleTitle; body = s.ineligibleBody + pctLabel;
+        showResult('ineligible', 'x', s.ineligibleTitle, s.ineligibleBody, true);
       }
 
-      showResult(tier, icon, title, body, true);
-
-    } catch (e) {
+    } catch(e) {
       document.getElementById('loading').classList.remove('show');
       document.getElementById('check-btn').disabled = false;
-      showResult('unknown', '❓', strings[currentLang].unknownTitle,
-        strings[currentLang].errorBody, true);
+      showResult('unknown', '?', strings[currentLang].unknownTitle, strings[currentLang].errorBody, true);
     }
   }
 
@@ -778,6 +463,5 @@
     }
   }
 </script>
-
 </body>
 </html>

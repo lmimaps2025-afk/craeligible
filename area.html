@@ -69,14 +69,14 @@
     <div class="brandbar"><span class="mark"></span><span class="kb">KeyBank</span></div>
     <div class="top">
       <div class="eyebrow">KeyBank Home Buyer Credit&reg;</div>
-      <h1 id="headline">This <span id="hood">West Salem</span> neighborhood may qualify for <span class="amt">$5,000</span> toward closing costs</h1>
-      <div class="where" id="where">Census Tract 51.00 &middot; West Salem, Oregon</div>
+      <h1>This neighborhood may qualify for <span class="amt">$5,000</span> toward closing costs</h1>
+      <div class="where" id="where">KeyBank Home Buyer Credit eligible area</div>
     </div>
     <div class="lead">
       Buying a home in the area outlined in red comes with a real advantage: <strong>up to $5,000</strong> toward your closing costs. That's the <strong>KeyBank Home Buyer Credit</strong> &mdash; available on homes throughout this neighborhood when you finance an owner-occupied purchase through KeyBank. Because it's based on the home's location, not your income, there's <strong>no income limit</strong> to meet and <strong>nothing to pay back</strong>.
     </div>
     <div id="map"></div>
-    <div class="legend"><span class="it"><span class="l-area"></span>Eligible area &mdash; <span id="legend-tract">Census Tract 51.00</span></span></div>
+    <div class="legend"><span class="it"><span class="l-area"></span>Eligible area &mdash; <span id="legend-tract">Eligible area</span></span></div>
     <div class="edge-note"><b>On the edge of the boundary?</b> Homes sit right along the red line in a few spots. For any address near the edge, confirm before quoting the credit &mdash; the outline is the exact eligible area.</div>
     <div class="contact">
       <div>
@@ -100,10 +100,12 @@
   const t6 = GEOID.slice(5);
   const TRACT_DISP = parseInt(t6.slice(0,4),10) + '.' + t6.slice(4);
 
-  document.getElementById('hood').textContent = NAME;
-  document.getElementById('where').innerHTML = 'Census Tract ' + TRACT_DISP + ' &middot; ' + NAME + ', Oregon';
-  document.getElementById('legend-tract').textContent = 'Census Tract ' + TRACT_DISP;
-  document.title = NAME + ' — $5,000 Eligible Area | KeyBank Home Buyer Credit';
+  const hasGeoid = params.has('geoid');
+  if (hasGeoid) {
+    document.getElementById('where').innerHTML = 'Census Tract ' + TRACT_DISP + ' &middot; ' + NAME + ', Oregon';
+    document.getElementById('legend-tract').textContent = 'Census Tract ' + TRACT_DISP;
+  }
+  document.title = (hasGeoid ? NAME + ' — ' : '') + '$5,000 Eligible Area | KeyBank Home Buyer Credit';
 
   let map;
   function showNotice(msg){ document.getElementById('map').innerHTML='<div style="padding:1.6rem;font-family:sans-serif;color:#6b6b70;font-size:.9rem;line-height:1.6">'+msg+'</div>'; }

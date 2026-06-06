@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eligible Areas — Oregon | KeyBank Home Buyer Credit</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+<style>
+  :root{--black:#0b0b0b;--red:#cc0000;--ink:#1a1a1a;--gray:#6b7280;--line:#e3e3e6;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:#e9eaee;
+       display:flex;align-items:center;justify-content:center;padding:18px;min-height:100vh;}
+  .sheet{background:#fff;width:min(1180px,97vw);aspect-ratio:11/8.5;display:flex;flex-direction:column;
+         border-radius:6px;overflow:hidden;box-shadow:0 10px 44px rgba(0,0,0,.18);}
+  .head{background:var(--black);border-bottom:4px solid var(--red);padding:.7rem 1.2rem;flex:none;
+        display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  .head .left{min-width:0;}
+  .brand{display:flex;align-items:center;gap:.5rem;}
+  .brand .mark{width:13px;height:13px;background:var(--red);border-radius:2px;flex:none;}
+  .brand .kb{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.2px;}
+  .brand .ttl{color:rgba(255,255,255,.6);font-weight:600;font-size:.9rem;border-left:1px solid rgba(255,255,255,.25);padding-left:.55rem;}
+  .head .vline{color:rgba(255,255,255,.82);font-size:.8rem;font-weight:300;margin-top:.3rem;line-height:1.4;}
+  .head .vline b{font-weight:700;color:#fff;}
+  .controls{display:flex;align-items:center;gap:.5rem;flex:none;}
+  #areaSel{font-family:inherit;font-size:.82rem;font-weight:600;padding:.45rem .55rem;border-radius:6px;border:1px solid #444;background:#fff;color:#111;max-width:230px;}
+  .btn{background:var(--red);color:#fff;border:none;border-radius:6px;padding:.5rem .9rem;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;}
+  .btn:hover{background:#a30000;}
+  #map{flex:1;background:#f1f2f4;}
+  .foot{flex:none;background:#fafafa;border-top:3px solid var(--red);padding:.5rem 1.2rem;font-size:.58rem;line-height:1.5;color:var(--gray);}
+  .foot .ref{color:var(--black);font-weight:700;}
+  .legend{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:8px;padding:.55rem .75rem;font-size:.8rem;box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .legend .row{display:flex;align-items:center;gap:.5rem;}
+  .legend .sw{width:26px;height:14px;border:2.5px solid var(--red);background:rgba(255,255,255,0);border-radius:2px;flex:none;}
+  .legend b{color:var(--black);}
+  .loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);z-index:1200;font-weight:700;color:var(--ink);text-align:center;padding:1rem;}
+  @page{size:letter landscape;margin:.4in;}
+  @media print{
+    body{background:#fff;padding:0;display:block;}
+    .sheet{width:100%;aspect-ratio:auto;box-shadow:none;border-radius:0;}
+    #map{height:6.1in;}
+    .controls{display:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="head">
+      <div class="left">
+        <div class="brand"><span class="mark"></span><span class="kb">KeyBank</span><span class="ttl" id="ttl">Eligible Areas</span></div>
+        <div class="vline">Homes in the highlighted area may qualify for <b>up to $5,000 toward closing costs</b> through the KeyBank Home Buyer Credit&reg;.</div>
+      </div>
+      <div class="controls">
+        <select id="areaSel" aria-label="Choose area"></select>
+        <button class="btn" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </div>
+    <div id="map"><div class="loading" id="loading">Loading map…<br><span style="font-weight:400;font-size:.85rem;color:#6b7280">If this stays blank, open the file in a normal browser tab.</span></div></div>
+    <div class="foot">
+      Areas outlined in red are designated by the FFIEC as eligible communities for the KeyBank Home Buyer Credit&reg;. Eligible buyers may receive up to $5,000 toward closing costs and prepaid fees when financing a primary residence through KeyBank. Eligibility is based on the property's location and is subject to change. This is not a commitment to lend. All loans subject to credit and collateral approval. Program details: <span class="ref">key.com/communitylending</span>. Brian Cross, KeyBank Mortgage Loan Officer, NMLS&nbsp;#590481 &middot; KeyBank NMLS&nbsp;#399797 &middot; Equal Housing Lender. &copy;2025 KeyCorp.
+    </div>
+  </div>
+
+<script>
+var AREAS=[
+  {region:"Portland Metro", title:"Portland (Multnomah County)", geoids:['41051000601','41051000602','41051001204','41051001602','41051001703','41051002001','41051002102','41051003301','41051004003','41051004104','41051004902','41051005602','41051007400','41051007600','41051007700','41051007900','41051008001','41051008100','41051008203','41051008204','41051008301','41051008302','41051008400','41051008500','41051008600','41051008800','41051008904','41051009001','41051009002','41051009101','41051009202','41051009203','41051009204','41051009301','41051009302','41051009400','41051009501','41051009502','41051009603','41051009604','41051009605','41051009606','41051009701','41051009703','41051009704','41051009801','41051009803','41051009804','41051010001','41051010101','41051010304','41051010405','41051010408','41051010410','41051010411']},
+  {region:"Portland Metro", title:"Beaverton / Hillsboro (Washington County)", geoids:['41067030700','41067030900','41067031005','41067031011','41067031100','41067031201','41067031202','41067031402','41067031606','41067031612','41067031615','41067031617','41067031626','41067031703','41067031705','41067031706','41067031708','41067031914','41067032003','41067032005','41067032409','41067032501','41067032606','41067032903','41067032904','41067033201','41067033202']},
+  {region:"Portland Metro", title:"Oregon City / Milwaukie (Clackamas County)", geoids:['41005020800','41005020900','41005021300','41005021601','41005021602','41005021802','41005021900','41005022107','41005022201','41005022904','41005022907','41005023902','41005024200','41005024303','41005024401']},
+  {region:"Portland Metro", title:"St. Helens (Columbia County)", geoids:['41009970202','41009970400','41009970700','41009971100']},
+  {region:"Willamette Valley", title:"Salem & West Salem", geoids:['41047000300','41047000400','41047000501','41047000502','41047000702','41047000703','41047001000','41047001503','41047001605','41047001607','41047001701','41047001702','41047001801','41053005100','41053005206']},
+  {region:"Willamette Valley", title:"Woodburn", geoids:['41047010309']},
+  {region:"Willamette Valley", title:"Dallas", geoids:['41053020203']},
+  {region:"Willamette Valley", title:"Albany", geoids:['41043020400','41043020500']},
+  {region:"Willamette Valley", title:"Lebanon & Sweet Home", geoids:['41043030403','41043030801']},
+  {region:"Willamette Valley", title:"Corvallis", geoids:['41003000101','41003000600','41003001001','41003010602']},
+  {region:"Willamette Valley", title:"McMinnville", geoids:['41071030601','41071030702','41071030703','41071030801','41071030802']},
+  {region:"Willamette Valley", title:"Newberg", geoids:['41071030201','41071030202']},
+  {region:"Willamette Valley", title:"Sheridan & Dayton", geoids:['41071030502','41071030900']},
+  {region:"Willamette Valley", title:"Eugene & Springfield (Lane County)", geoids:['41039000500','41039000705','41039000903','41039001202','41039001301','41039001500','41039001902','41039002103','41039002104','41039002504','41039002600','41039003104','41039003201','41039003301','41039003302','41039003400','41039003900','41039004000','41039004200','41039004403','41039004407','41039004800','41039005100']},
+  {region:"Southern Oregon", title:"Medford & Ashland", geoids:['41029000100','41029000201','41029000202','41029000203','41029000300','41029000502','41029001200','41029001303','41029001601','41029002702','41029002901']},
+  {region:"Southern Oregon", title:"Grants Pass", geoids:['41033360701','41033360703','41033361201','41033361601']},
+  {region:"Southern Oregon", title:"Roseburg", geoids:['41019120002','41019130001','41019160002','41019200000','41019210000']},
+  {region:"Southern Oregon", title:"Klamath Falls", geoids:['41035970100','41035970201','41035970500','41035970902','41035971200','41035971500','41035971600','41035971800','41035971900']},
+  {region:"Central Oregon", title:"Bend & Redmond", geoids:['41017000201','41017000202','41017001501','41017001801','41017001802','41017002002','41017002101']},
+  {region:"Central Oregon", title:"Prineville", geoids:['41013950302','41013950402']},
+  {region:"Central Oregon", title:"Madras", geoids:['41031940000','41031960201','41031960305']},
+  {region:"Central Oregon", title:"The Dalles", geoids:['41065970200']},
+  {region:"Eastern Oregon", title:"Baker City", geoids:['41001950300','41001950600']},
+  {region:"Eastern Oregon", title:"Ontario", geoids:['41045970300','41045970400']},
+  {region:"Eastern Oregon", title:"La Grande", geoids:['41061970700']},
+  {region:"Eastern Oregon", title:"Burns", geoids:['41025960102']},
+  {region:"Eastern Oregon", title:"Lakeview", geoids:['41037960100']},
+  {region:"Oregon Coast", title:"Coos Bay & North Bend", geoids:['41011000506','41011000902','41011001002','41011001101']},
+  {region:"Oregon Coast", title:"Lincoln County", geoids:['41041950100']},
+  {region:"Oregon Coast", title:"Tillamook", geoids:['41057960500']},
+  {region:"Oregon Coast", title:"Curry County", geoids:['41015950100']}
+];
+AREAS.forEach(function(a){a.key=a.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');});
+
+var map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([43.8,-120.5],7);
+map.createPane('labelsPane'); map.getPane('labelsPane').style.zIndex=620; map.getPane('labelsPane').style.pointerEvents='none';
+map.createPane('outlinePane'); map.getPane('outlinePane').style.zIndex=630;
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',{subdomains:'abcd',maxZoom:19,
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',{subdomains:'abcd',maxZoom:19,pane:'labelsPane'}).addTo(map);
+
+function outerRings(layer){var lls=layer.getLatLngs();if(!lls.length)return [];if(lls[0][0]&&lls[0][0].lat!==undefined)return [lls[0]];return lls.map(function(p){return p[0];});}
+
+var maskLayer=null, outlineLayer=null, legendCtl=null;
+function clearLayers(){[maskLayer,outlineLayer].forEach(function(l){if(l)map.removeLayer(l);});maskLayer=outlineLayer=null;if(legendCtl){map.removeControl(legendCtl);legendCtl=null;}}
+
+function renderArea(area){
+  document.getElementById('ttl').textContent='Eligible Areas — '+area.title;
+  document.title='Eligible Areas — '+area.title+' | KeyBank Home Buyer Credit';
+  document.getElementById('loading').style.display='flex';
+  document.getElementById('loading').innerHTML='Loading map…';
+  var where="GEOID IN ("+area.geoids.map(function(g){return "'"+g+"'";}).join(',')+")";
+  var url="https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Tracts_Blocks/MapServer/0/query?where="+encodeURIComponent(where)+"&outFields=GEOID&returnGeometry=true&outSR=4326&f=geojson";
+  fetch(url).then(function(r){return r.json();}).then(function(fc){
+    if(!fc.features||!fc.features.length)throw new Error('no features');
+    clearLayers();
+    var holes=[], bounds=L.latLngBounds([]);
+    fc.features.forEach(function(f){var inner=L.geoJSON(f).getLayers()[0];bounds.extend(inner.getBounds());outerRings(inner).forEach(function(r){holes.push(r);});});
+    var world=[[-89,-180],[-89,180],[89,180],[89,-180]];
+    maskLayer=L.polygon([world].concat(holes),{stroke:false,fillColor:'#111827',fillOpacity:0.45,interactive:false}).addTo(map);
+    var dissolved=null;
+    try{ if(window.turf){dissolved=fc.features.reduce(function(acc,f){return acc?turf.union(acc,f):f;},null);} }catch(e){dissolved=null;}
+    if(dissolved){ outlineLayer=L.geoJSON(dissolved,{pane:'outlinePane',style:{color:'#cc0000',weight:3.5,fill:false,opacity:1}}).addTo(map); }
+    else{ outlineLayer=L.geoJSON(fc,{pane:'outlinePane',style:{color:'#cc0000',weight:3,fill:false}}).addTo(map); }
+    legendCtl=L.control({position:'bottomleft'});
+    legendCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');d.innerHTML='<div class="row"><span class="sw"></span><b>Eligible area</b> &nbsp;up to $5,000 toward closing</div>';return d;};
+    legendCtl.addTo(map);
+    map.fitBounds(bounds,{padding:[28,28]});
+    setTimeout(function(){map.invalidateSize();map.fitBounds(bounds,{padding:[28,28]});},120);
+    document.getElementById('loading').style.display='none';
+  }).catch(function(e){
+    document.getElementById('loading').innerHTML='Could not load the map data here.<br><span style="font-weight:400;font-size:.85rem;color:#6b7280">Open this file in a normal browser tab (Chrome, Safari). The in-app preview blocks the map service.</span>';
+  });
+}
+
+var sel=document.getElementById('areaSel'), groups={};
+AREAS.forEach(function(a,i){
+  if(!groups[a.region]){groups[a.region]=document.createElement('optgroup');groups[a.region].label=a.region;sel.appendChild(groups[a.region]);}
+  var o=document.createElement('option');o.value=i;o.textContent=a.title;groups[a.region].appendChild(o);
+});
+sel.addEventListener('change',function(){var a=AREAS[+sel.value];history.replaceState(null,'','?area='+a.key);renderArea(a);});
+var startKey=new URLSearchParams(location.search).get('area');
+var startIdx=Math.max(0, AREAS.findIndex(function(a){return a.key===startKey;}));
+sel.value=startIdx; renderArea(AREAS[startIdx]);
+
+window.addEventListener('resize',function(){map.invalidateSize();});
+window.addEventListener('beforeprint',function(){map.invalidateSize();});
+</script>
+</body>
+</html>

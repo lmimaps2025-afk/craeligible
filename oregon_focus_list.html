@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eligible Area Focus List | KeyBank Home Buyer Credit</title>
+<style>
+  :root{--black:#0b0b0b;--red:#cc0000;--ink:#1a1a1a;--gray:#6b7280;--line:#e3e3e6;--bg:#f4f4f5;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);}
+  .wrap{max-width:920px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 8px 40px rgba(0,0,0,.10);}
+  .brandbar{background:var(--black);display:flex;align-items:center;gap:.55rem;padding:.7rem 1.4rem;}
+  .brandbar .mark{width:13px;height:13px;background:var(--red);border-radius:2px;}
+  .brandbar .kb{color:#fff;font-weight:700;font-size:1.05rem;}
+  .top{background:var(--black);color:#fff;padding:.4rem 1.4rem 1.3rem;border-bottom:4px solid var(--red);}
+  .eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:.4rem;}
+  .top h1{font-size:1.5rem;font-weight:700;}
+  .top p{font-size:.9rem;color:rgba(255,255,255,.7);margin-top:.4rem;font-weight:300;max-width:640px;line-height:1.5;}
+  .body{padding:1.2rem 1.4rem 2rem;}
+  .status{padding:.8rem 1rem;background:#fff7f7;border:1px solid #f3c2c2;border-radius:8px;color:#8a1c1c;font-size:.85rem;font-weight:600;margin-bottom:1rem;}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;}
+  thead th{text-align:right;padding:.55rem .5rem;border-bottom:2px solid var(--black);font-weight:700;cursor:pointer;white-space:nowrap;user-select:none;}
+  thead th.l{text-align:left;}
+  thead th:hover{color:var(--red);}
+  thead th .arr{color:var(--red);font-size:.72rem;}
+  tbody td{padding:.5rem .5rem;border-bottom:1px solid var(--line);text-align:right;}
+  tbody td.l{text-align:left;}
+  tbody tr:hover{background:#fafafa;}
+  .reg{font-size:.66rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .area{font-weight:700;color:var(--black);}
+  .pct{font-weight:700;}
+  .pct.lo{color:#1d7a46;} /* first-time buyer territory */
+  .pct.hi{color:#444;}
+  .foot{padding:1rem 1.4rem 1.6rem;border-top:3px solid var(--red);background:#fafafa;font-size:.66rem;line-height:1.55;color:var(--gray);}
+  .foot b{color:var(--black);}
+  .key{font-size:.74rem;color:var(--gray);margin:.2rem 0 1rem;line-height:1.5;}
+  .key b{color:var(--black);}
+  .keybar{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;background:#fff7f7;border:1px solid #f3c2c2;border-radius:8px;padding:.6rem .8rem;margin-bottom:1rem;font-size:.85rem;}
+  .keybar input{font-family:inherit;font-size:.85rem;padding:.45rem .55rem;border:1px solid #ccc;border-radius:6px;min-width:280px;flex:1;}
+  .keybar .ok{color:#1d7a46;font-weight:700;}
+  .keybar a{color:var(--red);cursor:pointer;text-decoration:underline;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar"><span class="mark"></span><span class="kb">KeyBank</span></div>
+  <div class="top">
+    <div class="eyebrow">Home Buyer Credit&reg; &middot; Eligible Areas</div>
+    <h1>Area Focus List</h1>
+    <p>Every eligible area in Oregon, with housing counts summed across its census tracts. Click any column to sort.</p>
+  </div>
+  <div class="body">
+    <div class="keybar" id="keybar">
+      <span>Census API key:</span>
+      <input id="keyInput" type="text" placeholder="paste your key here" autocomplete="off" spellcheck="false" />
+      <button class="btn" id="keyBtn" style="background:var(--red);color:#fff;border:none;border-radius:6px;padding:.5rem .9rem;font-weight:700;cursor:pointer;">Load data</button>
+      <span id="keynote"></span>
+    </div>
+
+    <div class="key"><b>Total homes</b> = size of the eligible market. <b>Owner-occupied</b> = homes that actually list and sell. <b>Owner-occ %</b> = character of the area; a <b style="color:#1d7a46">low %</b> means renter-heavy, entry-level housing — the strongest first-time-buyer pool for this credit.</div>
+    <div class="status" id="status">Loading Census housing data… open this file in a normal browser tab if it stalls.</div>
+    <table id="tbl" style="display:none">
+      <thead><tr>
+        <th class="l" data-k="region">Region</th>
+        <th class="l" data-k="title">Area</th>
+        <th data-k="tracts">Tracts</th>
+        <th data-k="units">Total homes</th>
+        <th data-k="own">Owner-occ</th>
+        <th data-k="pct">Owner-occ %</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="foot">
+    Source: U.S. Census Bureau, American Community Survey 5-year estimates (housing units B25001, tenure B25003). Counts are estimates and may differ slightly from a single-address FFIEC report. Eligible areas reflect FFIEC low- and moderate-income census tracts in KeyBank's lending footprint; eligibility is by property location and subject to change. <b>key.com/communitylending</b> &middot; Brian Cross, KeyBank Mortgage Loan Officer, NMLS&nbsp;#590481 &middot; KeyBank NMLS&nbsp;#399797 &middot; Equal Housing Lender.
+  </div>
+</div>
+
+<script>
+var AREAS=[
+  {region:"Portland Metro", title:"Portland (Multnomah County)", geoids:['41051000601','41051000602','41051001204','41051001602','41051001703','41051002001','41051002102','41051003301','41051004003','41051004104','41051004902','41051005602','41051007400','41051007600','41051007700','41051007900','41051008001','41051008100','41051008203','41051008204','41051008301','41051008302','41051008400','41051008500','41051008600','41051008800','41051008904','41051009001','41051009002','41051009101','41051009202','41051009203','41051009204','41051009301','41051009302','41051009400','41051009501','41051009502','41051009603','41051009604','41051009605','41051009606','41051009701','41051009703','41051009704','41051009801','41051009803','41051009804','41051010001','41051010101','41051010304','41051010405','41051010408','41051010410','41051010411']},
+  {region:"Portland Metro", title:"Beaverton / Hillsboro (Washington County)", geoids:['41067030700','41067030900','41067031005','41067031011','41067031100','41067031201','41067031202','41067031402','41067031606','41067031612','41067031615','41067031617','41067031626','41067031703','41067031705','41067031706','41067031708','41067031914','41067032003','41067032005','41067032409','41067032501','41067032606','41067032903','41067032904','41067033201','41067033202']},
+  {region:"Portland Metro", title:"Oregon City / Milwaukie (Clackamas County)", geoids:['41005020800','41005020900','41005021300','41005021601','41005021602','41005021802','41005021900','41005022107','41005022201','41005022904','41005022907','41005023902','41005024200','41005024303','41005024401']},
+  {region:"Portland Metro", title:"St. Helens (Columbia County)", geoids:['41009970202','41009970400','41009970700','41009971100']},
+  {region:"Willamette Valley", title:"Salem & West Salem", geoids:['41047000300','41047000400','41047000501','41047000502','41047000702','41047000703','41047001000','41047001503','41047001605','41047001607','41047001701','41047001702','41047001801','41053005100','41053005206']},
+  {region:"Willamette Valley", title:"Woodburn", geoids:['41047010309']},
+  {region:"Willamette Valley", title:"Dallas", geoids:['41053020203']},
+  {region:"Willamette Valley", title:"Albany", geoids:['41043020400','41043020500']},
+  {region:"Willamette Valley", title:"Lebanon & Sweet Home", geoids:['41043030403','41043030801']},
+  {region:"Willamette Valley", title:"Corvallis", geoids:['41003000101','41003000600','41003001001','41003010602']},
+  {region:"Willamette Valley", title:"McMinnville", geoids:['41071030601','41071030702','41071030703','41071030801','41071030802']},
+  {region:"Willamette Valley", title:"Newberg", geoids:['41071030201','41071030202']},
+  {region:"Willamette Valley", title:"Sheridan & Dayton", geoids:['41071030502','41071030900']},
+  {region:"Willamette Valley", title:"Eugene & Springfield (Lane County)", geoids:['41039000500','41039000705','41039000903','41039001202','41039001301','41039001500','41039001902','41039002103','41039002104','41039002504','41039002600','41039003104','41039003201','41039003301','41039003302','41039003400','41039003900','41039004000','41039004200','41039004403','41039004407','41039004800','41039005100']},
+  {region:"Southern Oregon", title:"Medford & Ashland", geoids:['41029000100','41029000201','41029000202','41029000203','41029000300','41029000502','41029001200','41029001303','41029001601','41029002702','41029002901']},
+  {region:"Southern Oregon", title:"Grants Pass", geoids:['41033360701','41033360703','41033361201','41033361601']},
+  {region:"Southern Oregon", title:"Roseburg", geoids:['41019120002','41019130001','41019160002','41019200000','41019210000']},
+  {region:"Southern Oregon", title:"Klamath Falls", geoids:['41035970100','41035970201','41035970500','41035970902','41035971200','41035971500','41035971600','41035971800','41035971900']},
+  {region:"Central Oregon", title:"Bend & Redmond", geoids:['41017000201','41017000202','41017001501','41017001801','41017001802','41017002002','41017002101']},
+  {region:"Central Oregon", title:"Prineville", geoids:['41013950302','41013950402']},
+  {region:"Central Oregon", title:"Madras", geoids:['41031940000','41031960201','41031960305']},
+  {region:"Central Oregon", title:"The Dalles", geoids:['41065970200']},
+  {region:"Eastern Oregon", title:"Baker City", geoids:['41001950300','41001950600']},
+  {region:"Eastern Oregon", title:"Ontario", geoids:['41045970300','41045970400']},
+  {region:"Eastern Oregon", title:"La Grande", geoids:['41061970700']},
+  {region:"Eastern Oregon", title:"Burns", geoids:['41025960102']},
+  {region:"Eastern Oregon", title:"Lakeview", geoids:['41037960100']},
+  {region:"Oregon Coast", title:"Coos Bay & North Bend", geoids:['41011000506','41011000902','41011001002','41011001101']},
+  {region:"Oregon Coast", title:"Lincoln County", geoids:['41041950100']},
+  {region:"Oregon Coast", title:"Tillamook", geoids:['41057960500']},
+  {region:"Oregon Coast", title:"Curry County", geoids:['41015950100']}
+];
+var rows=[], sortK='units', sortDir=-1;
+var fmt=function(n){return n.toLocaleString('en-US');};
+function num(v){var n=parseInt(v,10);return (isNaN(n)||n<0)?0:n;}
+function tryFetch(u){return fetch(u).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function getKey(){try{return localStorage.getItem('censusKey')||'';}catch(e){return '';}}
+function saveKey(k){try{localStorage.setItem('censusKey',k);}catch(e){}}
+
+async function loadStatewide(key){
+  var yrs=[2023,2022,2021];
+  for(var i=0;i<yrs.length;i++){
+    var u='https://api.census.gov/data/'+yrs[i]+'/acs/acs5?get=B25001_001E,B25003_002E,B25003_003E&for=tract:*&in=state:41+county:*&key='+encodeURIComponent(key);
+    var j=await tryFetch(u);
+    if(j&&j.length>50) return j;
+  }
+  return null;
+}
+async function loadByCounty(counties,key){
+  var head=null, all=[];
+  for(var i=0;i<counties.length;i++){
+    var j=null, yrs=[2023,2022,2021];
+    for(var y=0;y<yrs.length && !j;y++){
+      j=await tryFetch('https://api.census.gov/data/'+yrs[y]+'/acs/acs5?get=B25001_001E,B25003_002E,B25003_003E&for=tract:*&in=state:41+county:'+counties[i]+'&key='+encodeURIComponent(key));
+    }
+    if(j){ if(!head){head=j[0];} for(var k=1;k<j.length;k++) all.push(j[k]); }
+    await sleep(150);
+  }
+  return head?[head].concat(all):null;
+}
+
+async function start(key){
+  document.getElementById('status').style.display='block';
+  document.getElementById('status').innerHTML='Loading Census housing data…';
+  document.getElementById('tbl').style.display='none';
+  var counties=Array.from(new Set(AREAS.reduce(function(a,ar){return a.concat(ar.geoids.map(function(g){return g.slice(2,5);}));},[])));
+  var j=await loadStatewide(key);
+  if(!j){ j=await loadByCounty(counties,key); }
+  if(!j){ document.getElementById('status').innerHTML='Still no data. Two things to check: (1) the key is pasted correctly above, and (2) if you opened this file by double-clicking it from your hard drive, open it from your live website instead — some browsers block this kind of request from local files.'; return; }
+  var h=j[0], iu=h.indexOf('B25001_001E'), io=h.indexOf('B25003_002E'), ist=h.indexOf('state'), ic=h.indexOf('county'), it=h.indexOf('tract');
+  var look={};
+  for(var k=1;k<j.length;k++){var row=j[k]; look[row[ist]+row[ic]+row[it]]={units:num(row[iu]),own:num(row[io])};}
+  rows=AREAS.map(function(a){
+    var u=0,o=0,miss=0;
+    a.geoids.forEach(function(g){var d=look[g]; if(d){u+=d.units;o+=d.own;}else{miss++;}});
+    return {region:a.region,title:a.title,tracts:a.geoids.length,units:u,own:o,pct:u?Math.round(o/u*100):0,miss:miss};
+  });
+  document.getElementById('status').style.display='none';
+  document.getElementById('tbl').style.display='';
+  render();
+}
+
+(function(){
+  var ki=document.getElementById('keyInput'), kb=document.getElementById('keyBtn'), kn=document.getElementById('keynote');
+  var saved=getKey();
+  if(saved){ ki.value=saved; kn.innerHTML='<span class="ok">&#10003; key saved</span>'; start(saved); }
+  else { document.getElementById('status').innerHTML='Paste your free Census API key above and click Load data. (Get one at api.census.gov/data/key_signup.html)'; }
+  kb.addEventListener('click',function(){
+    var k=ki.value.trim();
+    if(!k){ kn.textContent='Paste a key first.'; return; }
+    saveKey(k); kn.innerHTML='<span class="ok">&#10003; key saved</span>'; start(k);
+  });
+})();
+
+function render(){
+  rows.sort(function(x,y){
+    var a=x[sortK], b=y[sortK];
+    if(typeof a==='string'){return sortDir*a.localeCompare(b);}
+    return sortDir*(a-b);
+  });
+  var tb=document.getElementById('rows'); tb.innerHTML='';
+  rows.forEach(function(r){
+    var tr=document.createElement('tr');
+    var pcls=r.pct<45?'lo':'hi';
+    tr.innerHTML='<td class="l reg">'+r.region+'</td>'+
+      '<td class="l area">'+r.title+'</td>'+
+      '<td>'+r.tracts+'</td>'+
+      '<td>'+(r.units?fmt(r.units):'&mdash;')+'</td>'+
+      '<td>'+(r.units?fmt(r.own):'&mdash;')+'</td>'+
+      '<td class="pct '+pcls+'">'+(r.units?r.pct+'%':'&mdash;')+'</td>';
+    tb.appendChild(tr);
+  });
+  document.querySelectorAll('thead th').forEach(function(th){
+    var k=th.getAttribute('data-k'); th.querySelector('.arr')&&th.querySelector('.arr').remove();
+    if(k===sortK){var s=document.createElement('span');s.className='arr';s.textContent=sortDir<0?' \u25BC':' \u25B2';th.appendChild(s);}
+  });
+}
+document.querySelectorAll('thead th').forEach(function(th){
+  th.addEventListener('click',function(){
+    var k=th.getAttribute('data-k');
+    if(k===sortK){sortDir*=-1;}else{sortK=k;sortDir=(k==='region'||k==='title')?1:-1;}
+    render();
+  });
+});
+</script>
+</body>
+</html>
